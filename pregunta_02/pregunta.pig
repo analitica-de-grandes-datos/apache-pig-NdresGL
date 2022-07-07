@@ -10,5 +10,15 @@ evaluación, pig sera eejcutado ejecutado en modo local:
 
 $ pig -x local -f pregunta.pig
 
-     >>> Escriba el codigo del mapper a partir de este punto <<<
+     lines = LOAD 'data.tsv' USING PigStorage('\t') AS (Letra:CHARARRAY,fecha:CHARARRAY,numero:float);
+
+     lines2 = FOREACH lines GENERATE Letra, fecha, (numero/10) AS (numero:float);
+
+     --Ordenar por valor
+     lines2 = ORDER lines2 BY Letra, numero;
+
+
+     lines3 = FOREACH lines2 GENERATE Letra, fecha, (numero)*10 AS (numero2:INT);
+
+     STORE lines3 INTO 'output' USING PigStorage(',');
 */
